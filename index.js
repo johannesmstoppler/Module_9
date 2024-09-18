@@ -1,12 +1,11 @@
-// TODO: Include packages needed for this application
 const inquirer = require("inquirer");
+const helper = require("./utils/generateMarkdown.js")
 const fs = require('fs');
-const generateREADme = ()=>
+const generateREADme = () =>
     `
-testing
+
 `
 
-// TODO: Create an array of questions for user input
 inquirer
     .prompt([
         {
@@ -36,7 +35,7 @@ inquirer
         },
         {
             type: "input",
-            messsge: "Provide the contribution guidelines for this project.",
+            message: "Provide the contribution guidelines for this project.",
             name: "contribution",
         },
         {
@@ -64,3 +63,18 @@ inquirer
             err ? console.log(err) : console.log('Successfully created READme.md!')
         );
     });
+
+function init() {
+    return inquirer.prompt(questions);
+}
+
+init()
+    .then(userInput => {
+        return generateMarkdown(userInput);
+    })
+    .then((readmeInfo) => {
+        return writeToFile("./dist/README.md", readmeInfo);
+    })
+    .catch(err => {
+        console.log(err);
+    })
